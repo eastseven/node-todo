@@ -4,7 +4,8 @@ var utils    = require( 'connect' ).utils;
  
 exports.index = function ( req, res, next ){
   Todo.
-    find({ user_id : req.cookies.user_id }).
+    // find({ user_id : req.cookies.user_id }).
+    find({}).
     sort( '-updated_at' ).
     exec( function ( err, todos, count ){
       if( err ) return next( err );
