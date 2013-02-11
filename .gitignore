@@ -1,5 +1,17 @@
-# ignore any vim files:
-*.sw[a-z]
-vim/.netrwhist
-node_modules
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+npm-debug.log
+
+npm_modules
 .DS_Store

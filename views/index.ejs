@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="date.js"></script>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1 style="text-align: center;"><%= title %></h1>
+      
+      <form id='create' action="/create" method="post" accept-charset="utf-8" style="text-align: center;">
+        <div class="input-prepend">
+          <button class="btn" type="button" id="add">添加</button>
+          <!-- <button class="btn" type="button">搜索</button> -->
+        	<input class="input-xxlarge" type="text" placeholder="代办的事项" name="content" value=""/>
+        </div>
+      </form>
+
+      <% todos.forEach( function ( todo ){ %>
+  	  <div class="well well-small">
+        <button class="close" name="del" data="<%= todo._id%>">&times;</button>
+        <p style="font-size: 16px;"><%= todo.content%></p>
+        <!-- <p><%= todo._id%></p> -->
+        <p><small><em><%= todo.updated_at.toLocaleString()%></em></small></p>
+        <!-- <p><small><%= todo.updated_at.getFullYear() %>-<%= todo.updated_at.getMonth()+1 %>-<%= todo.updated_at.getDate() %> <%= todo.updated_at.getHours() %>:<%= todo.updated_at.getMinutes() %>:<%= todo.updated_at.getSeconds() %></small></p>  -->
+      </div>
+  	  <% }); %>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <!-- <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">来自XieMin博客的消息</h3>
+      </div> -->
+      <div class="modal-body">
+        <p>请填写您要待办的事项</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+      </div>
+    </div>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      
+      $('#add').on('click', function() {
+        var content = $('input[name=content]').val();
+        if(content == '') {
+          $('#myModal').modal('show');
+        } else {
+          $('#create').submit();
+        }
+      });
+
+      $('button[name=del]').each(function() {
+        $(this).on('click', function() {
+          var todoDiv = $(this).parent();
+          var id = $(this).attr('data');
+          var url = '/delete/' + id;
+          $.getJSON(url, function(data) {
+            // console.log(data);
+            if(data.success) {
+              todoDiv.remove();
+            }
+          });
+        });
+      });
+    });
+  </script>
+  </body>
+</html>
